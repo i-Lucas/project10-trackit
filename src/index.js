@@ -1,7 +1,13 @@
 import reactDom from 'react-dom'
+import Routes from './Components/Routes'
 
-function App () {
-    return <h1>Hello World</h1>
+import './assets/reset.css'
+import './assets/global.css'
+
+function App() {
+    return (
+        <Routes />
+    )
 }
 
 reactDom.render(<App />, document.querySelector('.root'))

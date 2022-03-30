@@ -1,19 +1,21 @@
 import { useEffect } from 'react'
 import axios from 'axios'
 
-export default function Historic ( { token }) {
+export default function Historic({ token }) {
 
     console.log('chamada Historic')
-    if(token !== null) { console.log('token no Historic: ', token) }
+    if (token !== null) { console.log('token no Historic: ', token) }
 
     const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
-    const header = {
-        headers: {
-            "Authorization": `Bearer ${token}`
-        }
-    }
 
     useEffect(() => {
+
+        const header = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+
         axios.get(url, header).then(res => {
             console.log('habitos recuperados com sucesso')
             console.log(res.data)
@@ -21,7 +23,8 @@ export default function Historic ( { token }) {
             console.log('erro ao recuperar habitos')
             console.log(err.response)
         })
-    }, [url])
+
+    }, [token])
 
     return <h1>Historic</h1>
 }

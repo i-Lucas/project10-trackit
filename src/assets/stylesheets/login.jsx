@@ -39,6 +39,10 @@ const Container = styled.div`
         margin-top: 1%;
         margin-bottom: 1%;
 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         background: #52B6FF;
         border-radius: 10px;
         font-size: 22px;
@@ -80,6 +84,17 @@ const Container = styled.div`
         font-family: 'Lexend Deca';
         font-size: 22px;
         color: green;
+    }
+
+    h3 {
+
+        margin-top: 10%;
+        margin-left: 2%;
+        margin-right: 2%;
+        text-align: center;
+        font-family: 'Lexend Deca';
+        font-size: 12px;
+        color: blue;
     }
     `
     export default Container

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import axios from 'axios'
 
 import logo from '../../assets/img/logo.svg'
-import Container from './style'
+import Container from '../../assets/stylesheets/login'
 
 export default function Login({ setToken }) {
 
@@ -14,17 +14,12 @@ export default function Login({ setToken }) {
     const navigate = useNavigate();
 
     function HandleSubmit(e) {
-
         e.preventDefault()
-
         if (data.email.length < 5) {
             setData({ ...data, error: 'invalid email' })
-        }
-        else if (data.password.length < 5) {
+        } else if (data.password.length < 5) {
             setData({ ...data, error: 'invalid password' })
-        }
-        else {
-
+        } else {
             const user = { email: data.email, password: data.password }
             axios.post(url, user).then(res => {
                 setToken(res.data.token)

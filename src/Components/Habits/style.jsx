@@ -129,6 +129,7 @@ const Container = styled.div`
             background: #52B6FF;
             border-radius: 5px;
             color: #ffffff;
+            cursor: pointer;
         }        
     }
 

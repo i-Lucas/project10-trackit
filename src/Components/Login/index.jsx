@@ -16,19 +16,17 @@ export default function Login({ setInfo }) {
 
         if (window.localStorage.getItem('#$123') === 'true') {
             setData(data => ({ ...data, error: 'success' }))
-            required ()  
-            function required () {
-                if (window.localStorage.getItem('#$123') === 'true') {
-                    const secret = window.localStorage.getItem('#$321')
-                    const img = window.localStorage.getItem('#$fff')
-                    setTimeout(() => {
-                        setInfo({ token: secret, started: true, img: img })
-                        navigate('/habits')
-                    }, 1500)
-                }
+            required()
+            function required() {
+                const secret = window.localStorage.getItem('#$321')
+                const img = window.localStorage.getItem('#$fff')
+                setTimeout(() => {
+                    setInfo({ token: secret, started: true, img: img })
+                    navigate('/habits')
+                }, 1500)
             }
         }
-    }, [setData, navigate, setInfo ])
+    }, [setData, navigate, setInfo])
 
     function HandleSubmit(e) {
 

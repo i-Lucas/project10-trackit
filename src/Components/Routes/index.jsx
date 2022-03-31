@@ -21,7 +21,8 @@ export default function AppRoutes() {
 
     return (
         <BrowserRouter>
-                {info.started ? <Footer userimg={info.img}/> : null}
+                {/* {info.started ? <Footer userimg={info.img}/> : null} */}
+                <Footer img={''}/>
             <Routes>
                 <Route path='/' element={<Login setInfo={(info) => setInfo(info)} />} />
                 <Route path='/register' element={<Register />} />

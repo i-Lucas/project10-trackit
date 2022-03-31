@@ -1,9 +1,11 @@
+import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import axios from 'axios'
 
 export default function Today({ token }) {
 
     console.log('chamada Today')
+    const navigate = useNavigate();
 
     if(token !== null) { console.log('token no Today: ', token) }
     const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today'
@@ -26,5 +28,11 @@ export default function Today({ token }) {
         
     }, [token])
 
-    return <h1>Today</h1>
+    return (
+        <>
+            <h1>Today</h1>
+           <button onClick={() => navigate('/historic')}>historic</button>
+        </>
+        
+    )
 }

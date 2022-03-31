@@ -96,5 +96,19 @@ const Container = styled.div`
         font-size: 12px;
         color: blue;
     }
+
+    h4 {
+
+        margin-top: 10%;
+        font-family: 'Lexend Deca';
+        font-size: 12px;
+        font-weight: bold;
+        color: orange;
+    }
+
+    .check {
+
+        width: 20px;
+    }
     `
     export default Container

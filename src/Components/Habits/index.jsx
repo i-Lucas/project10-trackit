@@ -1,6 +1,8 @@
 import { useEffect } from 'react'
 import axios from 'axios'
 
+import { useNavigate } from 'react-router-dom'
+
 export default function Habits({ token }) {
 
     console.log('chamada Habits')
@@ -29,5 +31,12 @@ export default function Habits({ token }) {
 
     }, [token])
 
-    return <h1>Habits</h1>
+    const navigate = useNavigate();
+
+    return (
+        <>
+        <h1>habits</h1>
+       <button onClick={() => navigate('/today')}>today</button>
+    </>
+    )
 }

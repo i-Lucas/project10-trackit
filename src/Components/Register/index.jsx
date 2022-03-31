@@ -2,7 +2,7 @@ import Container from '../../assets/stylesheets/login'
 import { Link, useNavigate } from 'react-router-dom'
 import { ThreeDots } from 'react-loader-spinner'
 import logo from '../../assets/img/logo.svg'
-import verification from '../Verification'
+import Verification from '../Verification'
 import { useState } from 'react'
 import axios from 'axios'
 
@@ -20,16 +20,15 @@ export default function Register() {
 
     function HandleSubmit(e) {
         e.preventDefault()
-        const {email, password, photo} = data
-        if (!verification(email, undefined, undefined)) {
+        if (!Verification(data.email, undefined, undefined)) {
             setData({ ...data, error: 'invalid email', tip: 'your email must have the format email@example.com' })
         
-        } else if (!verification(undefined, password, undefined)) {
+        } else if (!Verification(undefined, data.password, undefined)) {
             return setData({ ...data, error: 'invalid password', tip: 'password must contain at least one uppercase character, one lowercase character and 5 numbers' })
         } else if (data.name.length < 5) {
             return setData({ ...data, error: 'invalid username', tip: 'your username must be at least 5 characters' })
         
-        } else if (!verification(undefined, undefined, photo)) {
+        } else if (!Verification(undefined, undefined, data.photo)) {
             return setData({ ...data, error: 'invalid url', tip: 'you must enter a valid image url. supported formats: jpg png jpeg' })
         } else {
             const user = { email: data.email, name: data.name, image: data.photo, password: data.password }

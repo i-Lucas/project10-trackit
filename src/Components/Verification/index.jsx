@@ -1,4 +1,4 @@
-export default function verification(email, password, photo) {
+export default function Verification(email, password, photo) {
 
     if (email !== undefined) {
         //eslint-disable-next-line

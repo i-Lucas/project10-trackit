@@ -10,6 +10,15 @@ const Container = styled.div`
     align-items: center;
     background: #E5E5E5;
 
+    .plus {
+
+        width: 40px;
+        height: 40px;
+        background: #52B6FF;    
+        border-radius: 5px;
+        margin-right: 10%;
+    }
+
     .new-habit {
 
         width: 90%;
@@ -36,6 +45,12 @@ const Container = styled.div`
                 border: 1px solid #D5D5D5;
                 box-sizing: border-box;
                 border-radius: 5px;
+
+                font-family: 'Lexend Deca';
+                font-weight: 400;
+                font-size: 20px;
+                line-height: 25px;
+                color: gray;
             }
         }
 

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import trackit from '../../assets/img/trackit.svg'
 
-export default function Footer({ userimg }) {
+export default function Header ({ userimg }) {
     return (
         <Container>
             <img className='logo' src={trackit} alt="logo" />
@@ -11,6 +11,11 @@ export default function Footer({ userimg }) {
 }
 
 const Container = styled.div`
+
+    @media (min-width: 768px) {
+        width: 50%;
+        margin-left: 25%;
+    }
 
     postion: relative;
     top: 0px;

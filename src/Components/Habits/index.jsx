@@ -1,138 +1,189 @@
+import { ThreeDots, TailSpin } from 'react-loader-spinner'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-// import { useNavigate } from 'react-router-dom'
-import Container from './style'
+import HabitsContainer from './style'
+import del from '../../assets/img/del.svg'
+import convert from './util'
+
+/* 
+
+    O QUE FALTA FAZER 
+
+        - adicionar animacao no botao apos salvar novo habito
+        - concertar animacao infinita em caso de nao existir habitos
+*/
+
+
 
 export default function Habits({ token }) {
 
-    // const navigate = useNavigate();
+    // monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7
+    const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-    let secret = Number
-    if (window.localStorage.getItem('#$321') !== null) {
-        secret = window.localStorage.getItem('#$321')
-    } else { secret = token }
+    const [habits, setHabits] = useState({
 
-    const [habitsList, setHabits] = useState([])
+        habitsList: [],
+        createNewHabit: false
+    })
 
     useEffect(() => {
 
-        const header = { headers: { "Authorization": `Bearer ${secret}` } }
+        const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
         const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
 
         axios.get(url, header).then(res => {
-            console.log('habits recovered successfully')
-            setHabits(res.data)
-
-        }).catch(err => {
-            console.log('error retrieving habits')
-            console.log(err.response)
+            const habitsList = res.data.map(habit => {
+                return {
+                    name: habit.name,
+                    days: habit.days.map(day => convert(day, 'string')),
+                    id: habit.id
+                }
+            })
+            setHabits(h => ({ ...h, habitsList }))
         })
+    }, [token])
 
-    }, [secret])
+    let control = habits.habitsList.length < 1 ? true : false
 
-    const header = { headers: { "Authorization": `Bearer ${secret}` } }
-    const [habits, setHabit] = useState({ name: '', days: [] })
-    const days = ['S', 'T', 'Q', 'Q', 'S', 'S', 'D']
-    const [createHabit, setCreate] = useState(false)
+    return (
 
-    function checkData() {
+        <HabitsContainer>
 
-        if (habits.name.length < 3) {
+            <div className="my-habits"> <h1>My Habits</h1>
+                { control ? <ThreeDots color="#00BFFF" height={15} width={50} />
+                    : <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>}
+            </div>
+
+            { control ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null}
+            {habits.createNewHabit ? <CreateHabit habits={habits} setHabits={setHabits} weekdays={daysOfWeek} /> : null}
+
+            {habits.habitsList.map((habit, index) =>
+
+                <UserHabits
+                    key={index}
+                    id={habit.id}
+                    name={habit.name}
+                    days={habit.days}
+                    weekdays={daysOfWeek}
+                    habits={habits.habitsList}
+                    setHabits={setHabits}
+                />)}
+
+        </HabitsContainer>
+    )
+}
+
+function CreateHabit({ habits, setHabits, weekdays }) {
+
+    const [selected, setSelected] = useState({ list: [], name: '' })
+    const days = selected.list.map(day => {
+        return convert(day, 'number')
+    })
+
+    function check() {
+
+        if (selected.name.length < 3) {
             return alert('habit must be at least 3 characters')
-        } if (habits.days.length < 1) {
+        } if (selected.list.length < 1) {
             return alert('habit must have at least 1 day')
 
         } else {
 
             const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
-            axios.post(url, { name: habits.name, days: habits.days }, header).then(res => {
-
+            const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
+            
+            axios.post(url, { name: selected.name, days: days }, header).then(res => {
                 console.log('habit registered successfully')
-                const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
-                setCreate(!createHabit)
-                axios.get(url, header).then(res => {
-                    console.log('habits recovered successfully')
-                    setHabits(res.data)
-
-                }).catch(err => {
-                    console.log('error retrieving habits')
-                    console.log(err.response)
-                })
+                console.log(res)
+                setHabits({ ...habits, habitsList: [...habits.habitsList, { name: selected.name, days: selected.list, id: res.data.id }] })
 
             }).catch(err => {
                 console.log('error when registering habit')
-                console.log(err)
+                console.log(err.response)
             })
         }
     }
 
-    const createContainer =
-        <div className='new-habit'>
-            <div className='habit-name'>
-                <input type='text' placeholder='habit name' required
-                    onChange={e => setHabit({ ...habits, name: e.target.value })} />
+    return (
+        <div className="create-new-habit">
+            <div className="input-text">
+                <input type="text" placeholder="New Habit" required
+                    onChange={e => setSelected({ ...selected, name: e.target.value })} />
             </div>
-
-            <div className='habit-day'>
-                {days.map((day, index) =>
-                    <Day day={day} setDays={setHabit} list={habits} key={index} daynumber={index + 1} />
-                )}
+            <div className="days-of-week">
+                {weekdays.map((day, index) =>
+                    <DaysOfWeek key={index} day={day} setSelected={setSelected} selected={selected} />)}
             </div>
-            <div className="confirm">
-                <button onClick={() => checkData()}>Confirm</button>
-                <button onClick={() => setCreate(!createHabit)}>Cancel</button>
+            <div className="cancel-save">
+                <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })} >Cancel</button>
+                <button onClick={() => check()} >Save</button>
             </div>
         </div>
-
-    return (
-        <Container>
-            <div>
-                <h1>My Habits</h1>
-                <button className='plus' onClick={() => setCreate(!createHabit)}>+</button>
-            </div>
-            {createHabit ? createContainer : null}
-            {habitsList.length < 1 ? <h2>{'You don`t have any habits registered yet. Add a habit to start tracking!'}</h2>
-                : habitsList.map((habit, index) =>
-
-                    <h1 key={index} onClick={() => {
-
-                        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habit.id}`
-                        axios.delete(url, header).then(res => {
-                            console.log('habit deleted successfully')
-                            const newList = habitsList.filter(item => item.id !== habit.id)
-                            setHabits(newList)
-                        }).catch(err => {
-                            console.log('error when deleting habit')
-                            console.log(err)
-                        })
-
-                    }}>{habit.name}</h1>
-                )}
-
-        </Container>
     )
 }
 
-function Day({ day, setDays, list, daynumber }) {
+function DaysOfWeek({ day, setSelected, selected }) {
 
-    const [dayinfo, setInfo] = useState({ selected: false })
+    function check(day) {
 
-    function checkDay() {
-
-        if (!dayinfo.selected) {
-            setInfo({ selected: true })
-            setDays({ ...list, days: [...list.days, daynumber] })
-            console.log('selected')
+        if (selected.list.includes(day)) {
+            setSelected({ ...selected, list: selected.list.filter(item => item !== day) })
         } else {
-            setInfo({ selected: false })
-            const newDays = list.days.filter(item => item !== daynumber)
-            setDays({ ...list, days: newDays })
-            console.log('unselected')
+            setSelected({ ...selected, list: [...selected.list, day] })
         }
     }
 
-    return <button onClick={() => checkDay()} style={{ background: dayinfo.selected ? '#CFCFCF' : '#FFFFFF' }} >{day}</button>
+    const color = selected.list.includes(day) ? '#CFCFCF' : '#FFFFFF'
+    const firstLetter = day.slice(0, 1)
+
+    return <button onClick={() => check(day)} style={{ background: color }} >{firstLetter}</button>
 }
 
-// <button onClick={() => navigate('/today')}>today</button>
+function UserHabits({ id, name, days, weekdays, habits, setHabits }) {
+
+    function remove(id) {
+
+        const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
+        const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
+        axios.delete(url, header).then(res => {
+
+            console.log(res)
+            setHabits({ ...habits, habitsList: habits.filter(habit => habit.id !== id) })
+
+        }).catch(err => {
+            console.log(err.response)
+        })
+    }
+
+    return (
+        <div className="user-habits">
+            <div className="habit-name">
+                <h1>{name}</h1>
+                <button onClick={() => remove(id)}><img src={del} alt="" /></button>
+            </div>
+            <div className="selected-days">
+                {weekdays.map((week, index) => <SelectedDays key={index} week={week} selected={days} />)}
+            </div>
+        </div>
+    )
+}
+
+function SelectedDays({ week, selected }) {
+
+    // separe o selected em dias unicos
+    const uniqueDays = [...new Set(selected)]
+
+    // separe o uniqueDays em elementos unicos
+    const uniqueDaysArray = [...new Set(uniqueDays)]
+
+    // compare uniqueDaysArray com week
+    const isSelected = uniqueDaysArray.includes(week)
+
+    // coloque apenas a primeira letra da string no botao
+    const firstLetter = week.slice(0, 1)
+
+    const color = isSelected ? '#CFCFCF' : '#FFFFFF'
+
+    return <button style={{ background: color }}>{firstLetter}</button>
+}

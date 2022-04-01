@@ -6,7 +6,7 @@ import Register from '../Register'
 import Habits from '../Habits'
 import Today from '../Today'
 import Historic from '../Historic'
-import Footer from '../Footer'
+import Header from '../Header'
 
 export default function AppRoutes() {
 
@@ -21,8 +21,8 @@ export default function AppRoutes() {
 
     return (
         <BrowserRouter>
-                {/* {info.started ? <Footer userimg={info.img}/> : null} */}
-                <Footer img={''}/>
+                {/* {info.started ? <Header userimg={info.img}/> : null} */}
+                <Header userimg={info.img}/>
             <Routes>
                 <Route path='/' element={<Login setInfo={(info) => setInfo(info)} />} />
                 <Route path='/register' element={<Register />} />

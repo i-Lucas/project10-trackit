@@ -1,10 +1,11 @@
-import Container from '../../assets/stylesheets/login'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ThreeDots } from 'react-loader-spinner'
-import logo from '../../assets/img/logo.svg'
-import { useState, useEffect } from 'react'
-import Verification from '../Verification'
 import axios from 'axios'
+
+import Verification from '../Verification'
+import Container from '../../assets/stylesheets/login'
+import logo from '../../assets/img/logo.svg'
 
 export default function Login({ setInfo }) {
 
@@ -46,10 +47,10 @@ export default function Login({ setInfo }) {
             axios.post(url, { email: data.email, password: data.password }).then(res => {
 
                 setData({ ...data, error: 'success' })
+                window.localStorage.setItem('#$321', res.data.token)
 
                 if (data.keep) {
                     window.localStorage.setItem('#$123', 'true')
-                    window.localStorage.setItem('#$321', res.data.token)
                     window.localStorage.setItem('#$fff', res.data.image)
                 } else {
                     window.localStorage.setItem('#$123', 'false')

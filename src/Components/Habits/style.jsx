@@ -9,6 +9,22 @@ const HabitsContainer = styled.div`
     align-items: center;
     background-color: #E5E5E5;
 
+    .nohabit {
+
+        width: 85%;
+        margin-top: 50px;
+        txet-align: center;
+
+        h1 {
+
+            font-family: 'Lexend Deca';
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            color: #666666;
+        }
+    }
+
     .loader {
 
         margin-top: 50%;

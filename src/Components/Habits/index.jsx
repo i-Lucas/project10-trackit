@@ -6,15 +6,6 @@ import HabitsContainer from './style'
 import del from '../../assets/img/del.svg'
 import convert from './util'
 
-/* 
-
-    O QUE FALTA FAZER 
-
-        - Colocar animacao de carregando ao fazer a requisicao das informacoes no servidor
-        - Colocar animacao no botao quando criar um novo habito
-        - Ao clicar em Salvar, precisa fechar a janela de criar um novo habito
-*/
-
 export default function Habits({ token }) {
 
     // monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6, sunday: 7
@@ -23,7 +14,8 @@ export default function Habits({ token }) {
     const [habits, setHabits] = useState({
 
         habitsList: [],
-        createNewHabit: false
+        createNewHabit: false,
+        Loading: true
     })
 
     useEffect(() => {
@@ -39,13 +31,12 @@ export default function Habits({ token }) {
                     id: habit.id
                 }
             })
+            setHabits({ ...habits, habitsList, Loading: false })
             setHabits(h => ({ ...h, habitsList }))
         })
     }, [token])
 
-    // let control = habits.habitsList.length < 1 ? true : false
-    const msg = `You don't have any habits registered yet. Add a habit to start tracking!`
-    // <ThreeDots color="#00BFFF" height={15} width={50} />
+    const anyhabits = <div className="nohabit"><h1>You don't have any habits registered yet. Add a habit to start tracking!</h1></div>
 
     return (
 
@@ -53,25 +44,14 @@ export default function Habits({ token }) {
 
             <div className="my-habits"> <h1>My Habits</h1>
                 <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>
-                {/* { control ? msg
-                    : <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>} */}
             </div>
 
-            {/* { control ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null} */}
+            {habits.Loading ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null}
             {habits.createNewHabit ? <CreateHabit habits={habits} setHabits={setHabits} weekdays={daysOfWeek} /> : null}
+            {habits.habitsList.length < 1 && !habits.Loading ? anyhabits : null}
 
             {habits.habitsList.map((habit, index) =>
-
-                <UserHabits
-                    key={index}
-                    id={habit.id}
-                    name={habit.name}
-                    days={habit.days}
-                    weekdays={daysOfWeek}
-                    habits={habits.habitsList}
-                    setHabits={setHabits}
-                />)}
-
+                <UserHabits key={index} id={habit.id} name={habit.name} days={habit.days} weekdays={daysOfWeek} habits={habits.habitsList} setHabits={setHabits} />)}
         </HabitsContainer>
     )
 }
@@ -94,11 +74,11 @@ function CreateHabit({ habits, setHabits, weekdays }) {
 
             const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
             const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
-            
+
             axios.post(url, { name: selected.name, days: days }, header).then(res => {
                 console.log('habit registered successfully')
                 console.log(res)
-                setHabits({ ...habits, habitsList: [...habits.habitsList, { name: selected.name, days: selected.list, id: res.data.id }] })
+                setHabits({ ...habits, habitsList: [...habits.habitsList, { name: selected.name, days: selected.list, id: res.data.id }], createNewHabit: !habits.createNewHabit  })
 
             }).catch(err => {
                 console.log('error when registering habit')

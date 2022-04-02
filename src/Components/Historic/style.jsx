@@ -14,7 +14,7 @@ const HistoricContainer = styled.div`
         h2 {
         
             margin-left: 10%;
-            margin-top: 10%;
+            padding-top: 10%;
             font-family: 'Lexend Deca';
             font-weight: 400;
             font-size: 23px;

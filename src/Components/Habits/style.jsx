@@ -35,7 +35,6 @@ const HabitsContainer = styled.div`
         display: flex;
         flex-direction: column;
         align-items: center;
-        // justify-content: center;
         width: 50%;
         margin-left: 25%;
     }

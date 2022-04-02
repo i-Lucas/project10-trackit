@@ -12,7 +12,7 @@ export default function FooterApp() {
             </div>
             <div className="today">
                 <img src={circle} alt="circle" />
-                <h4 onClick={() => navigate('/today')}>today</h4>
+                <h6 onClick={() => navigate('/today')}>today</h6>
             </div>
             <div className="historic">
                 <h1 onClick={() => navigate('/historic')}>historic</h1>

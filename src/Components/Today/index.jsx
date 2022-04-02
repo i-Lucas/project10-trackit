@@ -2,6 +2,8 @@ import { useEffect } from 'react'
 import Footer from '../Footer/'
 import axios from 'axios'
 
+import TodayContainer from './style'
+
 export default function Today({ token }) {
 
     // if (token !== null) { console.log('token no Today: ', token) }
@@ -26,10 +28,10 @@ export default function Today({ token }) {
     // }, [token])
 
     return (
-        <>
+        <TodayContainer>
             <h1>Today</h1>
             <Footer />
-        </>
+        </TodayContainer>
     )
 }
 

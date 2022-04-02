@@ -44,9 +44,9 @@ const Footer = styled.div`
             margin-bottom: 40%;
         }
 
-        h4 {
+        h6 {
             position: fixed;
-            margin-top: -17%;
+            margin-top: -65px;
             font-family: 'Lexend Deca';
             font-weight: 400;
             font-size: 18px;

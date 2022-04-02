@@ -1,30 +1,13 @@
-import { useEffect } from 'react'
-import axios from 'axios'
+import Footer from '../Footer/'
+import HistoricContainer from './style'
 
 export default function Historic({ token }) {
 
-    console.log('chamada Historic')
-    if (token !== null) { console.log('token no Historic: ', token) }
-
-    const url = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits'
-
-    useEffect(() => {
-
-        const header = {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        }
-
-        axios.get(url, header).then(res => {
-            console.log('habitos recuperados com sucesso')
-            console.log(res.data)
-        }).catch(err => {
-            console.log('erro ao recuperar habitos')
-            console.log(err.response)
-        })
-
-    }, [token])
-
-    return <h1>Historic</h1>
+    return (
+        <HistoricContainer>
+            <h2>Historic</h2>
+            <h5>Soon you will be able to see the history of your habits here!</h5>
+            <Footer />
+        </HistoricContainer>
+    )
 }

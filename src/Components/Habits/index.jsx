@@ -1,5 +1,6 @@
-import { ThreeDots, TailSpin } from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 import { useState, useEffect } from 'react'
+import Footer from '../Footer/'
 import axios from 'axios'
 
 import HabitsContainer from './style'
@@ -31,12 +32,12 @@ export default function Habits({ token }) {
                     id: habit.id
                 }
             })
-            setHabits({ ...habits, habitsList, Loading: false })
-            setHabits(h => ({ ...h, habitsList }))
+            setHabits(h => ({ ...h, habitsList, Loading: false }))
         })
     }, [token])
 
-    const anyhabits = <div className="nohabit"><h1>You don't have any habits registered yet. Add a habit to start tracking!</h1></div>
+    const anyhabits = <div className="nohabit">
+        <h1>You don't have any habits registered yet. Add a habit to start tracking!</h1></div>
 
     return (
 
@@ -46,12 +47,18 @@ export default function Habits({ token }) {
                 <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>
             </div>
 
-            {habits.Loading ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null}
+            {habits.Loading ? <div className="loader"><ThreeDots color='#00BFFF' height={90} width={90} /></div> : null}
             {habits.createNewHabit ? <CreateHabit habits={habits} setHabits={setHabits} weekdays={daysOfWeek} /> : null}
             {habits.habitsList.length < 1 && !habits.Loading ? anyhabits : null}
 
             {habits.habitsList.map((habit, index) =>
-                <UserHabits key={index} id={habit.id} name={habit.name} days={habit.days} weekdays={daysOfWeek} habits={habits.habitsList} setHabits={setHabits} />)}
+                <UserHabits
+                    key={index} id={habit.id}
+                    name={habit.name} days={habit.days}
+                    weekdays={daysOfWeek} habits={habits.habitsList}
+                    setHabits={setHabits} />)}
+
+            <Footer />
         </HabitsContainer>
     )
 }
@@ -76,10 +83,11 @@ function CreateHabit({ habits, setHabits, weekdays }) {
             const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
 
             axios.post(url, { name: selected.name, days: days }, header).then(res => {
-                console.log('habit registered successfully')
-                console.log(res)
-                setHabits({ ...habits, habitsList: [...habits.habitsList, { name: selected.name, days: selected.list, id: res.data.id }], createNewHabit: !habits.createNewHabit  })
-
+                setHabits({
+                    ...habits, habitsList: [...habits.habitsList,
+                    { name: selected.name, days: selected.list, id: res.data.id }],
+                    createNewHabit: !habits.createNewHabit
+                })
             }).catch(err => {
                 console.log('error when registering habit')
                 console.log(err.response)
@@ -129,8 +137,6 @@ function UserHabits({ id, name, days, weekdays, habits, setHabits }) {
         const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
         const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`
         axios.delete(url, header).then(res => {
-
-            console.log(res)
             setHabits({ ...habits, habitsList: habits.filter(habit => habit.id !== id) })
 
         }).catch(err => {
@@ -153,19 +159,10 @@ function UserHabits({ id, name, days, weekdays, habits, setHabits }) {
 
 function SelectedDays({ week, selected }) {
 
-    // separe o selected em dias unicos
     const uniqueDays = [...new Set(selected)]
-
-    // separe o uniqueDays em elementos unicos
     const uniqueDaysArray = [...new Set(uniqueDays)]
-
-    // compare uniqueDaysArray com week
     const isSelected = uniqueDaysArray.includes(week)
-
-    // coloque apenas a primeira letra da string no botao
     const firstLetter = week.slice(0, 1)
-
     const color = isSelected ? '#CFCFCF' : '#FFFFFF'
-
     return <button style={{ background: color }}>{firstLetter}</button>
 }

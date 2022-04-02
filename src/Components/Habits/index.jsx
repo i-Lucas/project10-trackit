@@ -10,11 +10,10 @@ import convert from './util'
 
     O QUE FALTA FAZER 
 
-        - adicionar animacao no botao apos salvar novo habito
-        - concertar animacao infinita em caso de nao existir habitos
+        - Colocar animacao de carregando ao fazer a requisicao das informacoes no servidor
+        - Colocar animacao no botao quando criar um novo habito
+        - Ao clicar em Salvar, precisa fechar a janela de criar um novo habito
 */
-
-
 
 export default function Habits({ token }) {
 
@@ -44,18 +43,21 @@ export default function Habits({ token }) {
         })
     }, [token])
 
-    let control = habits.habitsList.length < 1 ? true : false
+    // let control = habits.habitsList.length < 1 ? true : false
+    const msg = `You don't have any habits registered yet. Add a habit to start tracking!`
+    // <ThreeDots color="#00BFFF" height={15} width={50} />
 
     return (
 
         <HabitsContainer>
 
             <div className="my-habits"> <h1>My Habits</h1>
-                { control ? <ThreeDots color="#00BFFF" height={15} width={50} />
-                    : <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>}
+                <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>
+                {/* { control ? msg
+                    : <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>} */}
             </div>
 
-            { control ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null}
+            {/* { control ? <div className="loader"><TailSpin color='#00BFFF' height={90} width={90} /></div> : null} */}
             {habits.createNewHabit ? <CreateHabit habits={habits} setHabits={setHabits} weekdays={daysOfWeek} /> : null}
 
             {habits.habitsList.map((habit, index) =>

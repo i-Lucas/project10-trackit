@@ -47,7 +47,7 @@ export default function Habits({ token }) {
                 <div className="my-habits"> <h1>My Habits</h1>
                     <button onClick={() => setHabits({ ...habits, createNewHabit: !habits.createNewHabit })}>+</button>
                 </div>}
-                
+
             {habits.createNewHabit ? <CreateHabit habits={habits} setHabits={setHabits} weekdays={daysOfWeek} /> : null}
             {habits.habitsList.length < 1 && !habits.Loading ? anyhabits : null}
 

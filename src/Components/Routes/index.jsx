@@ -13,15 +13,14 @@ export default function AppRoutes() {
     const [info, setInfo] = useState({
 
         token: null,
-        started: false,
+        started: true,
         img: undefined
     })
 
-    if(info.token === null) {  console.log('info.token no AppRoutes: null') }
-
     return (
+
         <BrowserRouter>
-                {info.started ? <Header userimg={info.img}/> : null}
+            {info.started ? <Header userimg={info.img} /> : null}
             <Routes>
                 <Route path='/' element={<Login setInfo={(info) => setInfo(info)} />} />
                 <Route path='/register' element={<Register />} />

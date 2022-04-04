@@ -4,7 +4,7 @@ import Footer from '../Footer/'
 import axios from 'axios'
 
 import TodayContainer from './style'
-import check from '../../assets/img/check.svg'
+import checkbox from '../../assets/img/check.svg'
 
 export default function Today({ token }) {
 
@@ -73,8 +73,34 @@ export default function Today({ token }) {
 function GenerateHabits({ name, id, done, currentSequence, highestSequence }) {
 
     const [checked, setChecked] = useState(done)
-
+    const [loading, setLoad] = useState(false)
     const color = checked ? '#8FC549' : '#EBEBEB'
+    const header = { headers: { "Authorization": `Bearer ${window.localStorage.getItem('#$321')}` } }
+
+    function check(id) {
+
+        setLoad(true)
+
+        if (checked) {
+
+            const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`
+            axios.post(url, {}, header).then(res => {
+
+                setLoad(false)
+                setChecked(!checked)
+            })
+        }
+        else {
+
+            const url = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`
+            axios.post(url, {}, header).then(res => {
+                
+                setLoad(false)
+                setChecked(!checked)
+            })
+        }
+    }
+
     return (
         <div className="habit-box">
             <div className="name"><h1>{name}</h1></div>
@@ -82,11 +108,9 @@ function GenerateHabits({ name, id, done, currentSequence, highestSequence }) {
                 <p>current sequence: {currentSequence}</p>
                 <p>your record: {highestSequence}</p>
             </div>
-            <div className="check-box" style={{ background: color }} onClick={() => setChecked(!checked)}>
-                <img src={check} alt="check" />
+            <div className="check-box" style={{ background: color }} onClick={() => check(id)}>
+                {loading ? <ThreeDots color='#00BFFF' height={50} width={50} /> : <img src={checkbox} alt="check" />}
             </div>
         </div>
     )
 }
-
-//  background-color: #E5E5E5;

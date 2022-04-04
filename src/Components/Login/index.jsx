@@ -15,6 +15,7 @@ export default function Login({ setInfo }) {
 
     useEffect(() => {
 
+        setInfo({ token: '', started: false, img: '' })
         if (window.localStorage.getItem('#$123') === 'true') {
             setData(data => ({ ...data, error: 'success' }))
             required()
@@ -27,7 +28,7 @@ export default function Login({ setInfo }) {
                 }, 1500)
             }
         }
-    }, [setData, navigate, setInfo])
+    }, [setData, navigate])
 
     function HandleSubmit(e) {
 

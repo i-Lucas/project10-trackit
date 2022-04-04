@@ -72,7 +72,9 @@ export default function Today({ token }) {
 
 function GenerateHabits({ name, id, done, currentSequence, highestSequence }) {
 
-    const color = done ? '#8FC549' : '#EBEBEB'
+    const [checked, setChecked] = useState(done)
+
+    const color = checked ? '#8FC549' : '#EBEBEB'
     return (
         <div className="habit-box">
             <div className="name"><h1>{name}</h1></div>
@@ -80,7 +82,7 @@ function GenerateHabits({ name, id, done, currentSequence, highestSequence }) {
                 <p>current sequence: {currentSequence}</p>
                 <p>your record: {highestSequence}</p>
             </div>
-            <div className="check-box" style={{ background: color }}>
+            <div className="check-box" style={{ background: color }} onClick={() => setChecked(!checked)}>
                 <img src={check} alt="check" />
             </div>
         </div>

@@ -14,7 +14,7 @@ const Container = styled.div`
     }
 
     img {
-        margin-bottom: 20%;
+        margin-bottom: 5%;
     }
 
     input {
@@ -93,12 +93,12 @@ const Container = styled.div`
 
     h3 {
 
-        margin-top: 10%;
+        margin-top: 20px;
         margin-left: 2%;
         margin-right: 2%;
         text-align: center;
         font-family: 'Lexend Deca';
-        font-size: 12px;
+        font-size: 15px;
         color: blue;
     }
 

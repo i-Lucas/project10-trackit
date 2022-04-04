@@ -88,7 +88,7 @@ const Footer = styled.div`
                 margin-bottom: 12%;
             }
 
-            h1 {
+            h6 {
 
                 margin-top: -3%;
             }
